@@ -123,7 +123,7 @@ const CompanionComponent = ({ companionId, subject, topic, name, userName, userI
               {userName}
             </p>
           </div>
-          <button className="btn-mic" onClick={toggleMicrophone}>
+          <button className="btn-mic" onClick={toggleMicrophone} disabled={callStatus !== CallStatus.ACTIVE}>
             <Image src={isMuted ? "/icons/mic-off.svg" : "/icons/mic-on.svg"} alt="mic" width={36} height={36} />
             <p className="max-sm:hidden">
               {isMuted ? "Turn on microphone" : "Turn off microphone"}
@@ -134,10 +134,6 @@ const CompanionComponent = ({ companionId, subject, topic, name, userName, userI
           </button>
         </div>
       </section>
-
-      <div className="bg-red-500 border border-green-500">
-        HELLO
-      </div>
 
       <section className="transcript">
         <div className="transcript-message no-scrollbar">

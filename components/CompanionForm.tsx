@@ -206,7 +206,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Resolver } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -231,21 +231,6 @@ import { Textarea } from "./ui/textarea";
 import { createCompanion } from "@/lib/actions/companion.actions";
 import { redirect } from "next/navigation";
 
-// --------------------------
-// 1. Explicit form values type
-// --------------------------
-type FormValues = {
-  name: string;
-  subject: string;
-  topic: string;
-  voice: string;
-  style: string;
-  duration: number;
-};
-
-// --------------------------
-// 2. Zod schema
-// --------------------------
 const formSchema = z.object({
   name: z.string().min(1, { message: "Companion is required." }),
   subject: z.string().min(1, { message: "Subject is required." }),
@@ -255,13 +240,10 @@ const formSchema = z.object({
   duration: z.coerce.number().min(1, { message: "Duration is required." }),
 });
 
-// --------------------------
-// 3. Form component
-// --------------------------
 const CompanionForm = () => {
-  // Use explicit FormValues type & cast resolver
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema) as Resolver<FormValues>,
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       subject: "",
@@ -272,21 +254,22 @@ const CompanionForm = () => {
     },
   });
 
-  const onSubmit = async (values: FormValues) => {
-    const companion = await createCompanion(values);
+  // 2. Define a submit handler.
+  const onSubmit = async(values: z.infer<typeof formSchema>) => {
+    const companion = await createCompanion(values)
 
     if (companion) {
-      redirect(`/companions/${companion.id}`);
-    } else {
-      console.log("Failed to create a companion");
-      redirect("/");
+      redirect(`/companions/${companion.id}`)
+    }
+    else {
+      console.log("Failed to create a companion")
+      redirect("/")
     }
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* Name */}
         <FormField
           control={form.control}
           name="name"
@@ -304,8 +287,6 @@ const CompanionForm = () => {
             </FormItem>
           )}
         />
-
-        {/* Subject */}
         <FormField
           control={form.control}
           name="subject"
@@ -319,18 +300,14 @@ const CompanionForm = () => {
                   defaultValue={field.value}
                 >
                   <SelectTrigger className="input capitalize">
-                    <SelectValue placeholder="Select the subject" />
+                    <SelectValue placeholder="Select the subject " />
                   </SelectTrigger>
                   <SelectContent>
-                    {subjects.map((subject) => (
-                      <SelectItem
-                        key={subject}
-                        value={subject}
-                        className="capitalize"
-                      >
-                        {subject}
-                      </SelectItem>
-                    ))}
+                   {subjects.map((subject) => (
+                     <SelectItem key={subject} value={subject} className="capitalize">
+                       {subject}
+                     </SelectItem>
+                   ))}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -338,14 +315,12 @@ const CompanionForm = () => {
             </FormItem>
           )}
         />
-
-        {/* Topic */}
         <FormField
           control={form.control}
           name="topic"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>What should the companion help with?</FormLabel>
+              <FormLabel>What should the companiono help with?</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Ex. Derivatives & Integrals"
@@ -357,8 +332,6 @@ const CompanionForm = () => {
             </FormItem>
           )}
         />
-
-        {/* Voice */}
         <FormField
           control={form.control}
           name="voice"
@@ -384,8 +357,6 @@ const CompanionForm = () => {
             </FormItem>
           )}
         />
-
-        {/* Style */}
         <FormField
           control={form.control}
           name="style"
@@ -411,8 +382,6 @@ const CompanionForm = () => {
             </FormItem>
           )}
         />
-
-        {/* Duration */}
         <FormField
           control={form.control}
           name="duration"
@@ -431,10 +400,7 @@ const CompanionForm = () => {
             </FormItem>
           )}
         />
-
-        <Button type="submit" className="w-full cursor-pointer">
-          Build Your Companion
-        </Button>
+        <Button type="submit" className="w-full cursor-pointer">Build Your Companion</Button>
       </form>
     </Form>
   );

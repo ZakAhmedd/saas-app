@@ -206,11 +206,6 @@
 
 
 
-
-
-
-
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -239,6 +234,7 @@ import { Textarea } from "./ui/textarea";
 import { createCompanion } from "@/lib/actions/companion.actions";
 import { redirect } from "next/navigation";
 
+// 1. Define Zod schema
 const formSchema = z.object({
   name: z.string().min(1, { message: "Companion is required." }),
   subject: z.string().min(1, { message: "Subject is required." }),
@@ -248,28 +244,28 @@ const formSchema = z.object({
   duration: z.coerce.number().min(1, { message: "Duration is required." }),
 });
 
-const CompanionForm = () => {
-  type FormValues = {
-    name: string;
-    subject: string;
-    topic: string;
-    voice: string;
-    style: string;
-    duration: number;
-  };
+// 2. Define the form values type manually
+type FormValues = {
+  name: string;
+  subject: string;
+  topic: string;
+  voice: string;
+  style: string;
+  duration: number;
+};
 
-  // 1. Define your form.
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema) as Resolver<FormValues>,
-    defaultValues: {
-      name: "",
-      subject: "",
-      topic: "",
-      voice: "",
-      style: "",
-      duration: 15,
-    },
-  });
+// 3. useForm setup
+const form = useForm<FormValues>({
+  resolver: zodResolver(formSchema) as Resolver<FormValues>,
+  defaultValues: {
+    name: "",
+    subject: "",
+    topic: "",
+    voice: "",
+    style: "",
+    duration: 15,
+  },
+});
 
   // 2. Define a submit handler.
   const onSubmit = async(values: z.infer<typeof formSchema>) => {

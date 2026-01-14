@@ -250,7 +250,7 @@ const CompanionForm = () => {
       topic: "",
       voice: "",
       style: "",
-      duration: 15,
+      duration: 15 as number, // cast ensures TS type matches
     },
   });
 

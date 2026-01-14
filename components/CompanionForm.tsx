@@ -241,16 +241,25 @@ const formSchema = z.object({
 });
 
 const CompanionForm = () => {
+  type FormValues = {
+    name: string;
+    subject: string;
+    topic: string;
+    voice: string;
+    style: string;
+    duration: number;
+  };
+
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema) as Resolver<FormValues>,
     defaultValues: {
       name: "",
       subject: "",
       topic: "",
       voice: "",
       style: "",
-      duration: 15 as number, // cast ensures TS type matches
+      duration: 15,
     },
   });
 

@@ -4,9 +4,10 @@ AI companions to help you learn different subjects and topics.
 
 ## Info
 
-🌟 Tech stack: 
-  Clerk
+🌟 Tech stack:
+  React ts
   TailwindCSS 
+  Clerk
   Vapi 
   Supabase
 

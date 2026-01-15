@@ -5,7 +5,8 @@ AI companions to help you learn different subjects and topics.
 ## Info
 
 🌟 Tech stack:
-  React ts
+  React
+  Next.js
   TailwindCSS 
   Clerk
   Vapi 
